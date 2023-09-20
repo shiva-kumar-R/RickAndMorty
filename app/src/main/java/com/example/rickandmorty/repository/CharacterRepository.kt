@@ -1,9 +1,9 @@
 package com.example.rickandmorty.repository
 
-import com.example.rickandmorty.model.CharactersResponse
+import androidx.paging.PagingData
+import com.example.rickandmorty.model.Character
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface CharacterRepository {
-    fun getCharacters(): Flow<Response<CharactersResponse>>
+    fun getCharacters(): Flow<PagingData<Character>>
 }
