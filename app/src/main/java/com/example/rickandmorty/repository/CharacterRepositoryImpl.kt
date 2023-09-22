@@ -13,8 +13,8 @@ class CharacterRepositoryImpl @Inject constructor(
     private val apiService: APIService
 ) : CharacterRepository {
 
-    override fun getCharacters(): Flow<PagingData<Character>> = Pager(
-        config = PagingConfig(pageSize = 20, prefetchDistance = 2),
+    override suspend fun getCharacters(): Flow<PagingData<Character>> = Pager(
+        config = PagingConfig(pageSize = 8, prefetchDistance = 2),
         pagingSourceFactory = { CharacterPagingDataSource(apiService) }
     ).flow
 }

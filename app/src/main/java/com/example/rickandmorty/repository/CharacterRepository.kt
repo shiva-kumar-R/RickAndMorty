@@ -5,5 +5,5 @@ import com.example.rickandmorty.model.Character
 import kotlinx.coroutines.flow.Flow
 
 interface CharacterRepository {
-    fun getCharacters(): Flow<PagingData<Character>>
+    suspend fun getCharacters(): Flow<PagingData<Character>>
 }

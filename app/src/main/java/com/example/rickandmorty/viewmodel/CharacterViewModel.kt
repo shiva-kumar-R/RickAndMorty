@@ -7,7 +7,8 @@ import androidx.paging.cachedIn
 import com.example.rickandmorty.model.Character
 import com.example.rickandmorty.repository.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,8 +17,8 @@ class CharacterViewModel @Inject constructor(
     private val characterRepository: CharacterRepository
 ) : ViewModel() {
 
-    private lateinit var _characters: PagingData<Character>
-    private val character get() = _characters
+    private var _characters = MutableStateFlow<PagingData<Character>>(PagingData.empty())
+    val character: StateFlow<PagingData<Character>> = _characters
 
     init {
         getAllCharacters()
@@ -25,9 +26,9 @@ class CharacterViewModel @Inject constructor(
 
     private fun getAllCharacters() = viewModelScope.launch {
         characterRepository.getCharacters()
-            .onEach { data ->
-                _characters = data
-            }
             .cachedIn(viewModelScope)
+            .collect {
+                _characters.emit(it)
+            }
     }
 }
